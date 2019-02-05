@@ -10,19 +10,16 @@ GOMPLATE_EXTRA_ARGS=${EXTRA_ARGS:-$GOMPLATE_EXTRA_ARGS}
 mkdir -p ${KUBECONFIG_DIR}
 
 function write_kube_config() {
-	[[ "$KOPS_AWS_IAM_AUTHENTICATOR_ENABLED" == "true" ]] && template_iam_authenticator_cfg || kops_export_cfg
+	[[ "$KOPS_AWS_IAM_AUTHENTICATOR_ENABLED" == "true" ]] && template_iam_authenticator_snippet || kops_export_cfg
 }
 
 function kops_export_cfg() {
 	kops export kubecfg
 }
 
-function template_iam_authenticator_cfg() {
-	local KEYSET=$(mktemp)
-	aws s3 cp $KOPS_STATE_STORE/$KOPS_CLUSTER_NAME/pki/issued/ca/keyset.yaml $KEYSET
-	export KOPS_CERTIFICATE_AUTHORITY_DATA="$(yq r $KEYSET 'spec.keys[0].publicMaterial')"
-	rm -rf $KEYSET
+function template_iam_authenticator_snippet() {
 	direnv exec ${KUBECONFIG_DIR} gomplate ${GOMPLATE_EXTRA_ARGS} -f ${KUBECONFIG_TEMPLATE} >${KUBECONFIG}
+	kops_export_cfg
 }
 
 write_kube_config
