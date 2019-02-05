@@ -130,7 +130,7 @@ ENV KOPS_STATE_STORE_REGION us-east-1
 ENV KOPS_FEATURE_FLAGS=+DrainAndValidateRollingUpdate
 ENV KOPS_MANIFEST=/conf/kops/manifest.yaml
 ENV KOPS_TEMPLATE=/templates/kops/default.yaml
-ENV KUBECONFIG_TEMPLATE=/templates/kops/kube_config.yaml
+ENV KUBECONFIG_TEMPLATE=/templates/kops/kubecfg.yaml
 
 # https://github.com/kubernetes/kops/blob/master/channels/stable
 # https://github.com/kubernetes/kops/blob/master/docs/images.md
