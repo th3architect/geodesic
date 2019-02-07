@@ -22,6 +22,17 @@ tasks:
     description: "Operations to perform on the kops cluster"
 
     tasks:
+      # kubecfg operationss
+      kubecfg:
+        description: "Kubecfg Management"
+        tasks:
+          # Writes out kubecfg
+          generate:
+            description: "Generate kubecfg"
+            script:
+            - *exit_on_errors
+            - generate-kubecfg
+
       # Show a plan of pending changes
       plan:
         description: "Show a plan of pending changes"
